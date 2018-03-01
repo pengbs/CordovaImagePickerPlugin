@@ -1,0 +1,11 @@
+{
+  "name": "imagepicker",
+  "version": "1.0.1",
+  "description": "image picker and crop plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "baosheng",
+  "license": "ISC"
+}

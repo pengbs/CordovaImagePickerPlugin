@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="ImagePicker" version="0.0.2" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>ImagePickerPlugin</name>
+    <js-module name="ImagePickerPlugin" src="www/ImagePickerPlugin.js">
+        <clobbers target="ImagePicker" />
+    </js-module>
+
+    <platform name="android">  
+  
+        <config-file target="res/xml/config.xml" parent="/*">  
+            <feature name="ImagePicker">  
+                <param name="android-package" value="com.rxxb.imagepicker.ImagePickerMain"/>  
+            </feature>  
+        </config-file> 
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+             <uses-permission android:name="android.permission.CAMERA"/>
+             <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="com.rxxb.imagepicker.ui.ImageBaseActivity"/>
+            <activity
+                android:name="com.rxxb.imagepicker.ui.ImageGridActivity"
+                android:configChanges="orientation|screenSize"
+                android:theme="@style/ImagePickerTheme"/>
+            <activity
+                android:name="com.rxxb.imagepicker.ui.ImageCropActivity"
+                android:configChanges="orientation|screenSize"
+                android:hardwareAccelerated="false"
+                android:theme="@style/ImagePickerTheme"/>
+            <activity
+                android:name="com.rxxb.imagepicker.ui.CropActivity"
+                android:configChanges="orientation|screenSize"
+                android:theme="@style/ImagePickerTheme"/>
+            <activity
+                android:name="com.rxxb.imagepicker.ucrop.UCropActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/ImagePickerTheme"/>
+            <activity
+                android:name="com.rxxb.imagepicker.ui.ImagePreviewActivity"
+                android:configChanges="orientation|screenSize"
+                android:theme="@style/ImagePickerThemeFullScreen"/>
+
+            <activity
+                android:name="com.rxxb.imagepicker.ui.ImagePreviewDelActivity"
+                android:configChanges="orientation|screenSize"
+                android:theme="@style/ImagePickerThemeFullScreen"/>
+            <provider
+                android:name="com.rxxb.imagepicker.ImagePickerProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+                <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
+            </provider>
+        </config-file>
+        <source-file src="src/android/ImagePickerMain.java" target-dir="src/com/rxxb/imagepicker" />
+        <framework src="src/android/imagepicker.gradle" custom="true" type="gradleReference"/>
+        <lib-file src="src/android/imagepicker.aar"/>
+        <framework src="com.android.support:appcompat-v7:25.1.1" />
+        <framework src="com.github.chrisbanes.photoview:library:1.2.4" />
+        <framework src="com.android.support:recyclerview-v7:25.1.1" />
+        <framework src="com.github.bumptech.glide:glide:3.7.0"/> 
+
+    </platform>  
+</plugin>
