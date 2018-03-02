@@ -137,7 +137,7 @@ public class ImagePickerMain extends CordovaPlugin {
                 }
             });
         } else {
-            mCallbackContext.error("获取失败");
+            mCallbackContext.error("没有选择任何图片");
         }
     }
 
