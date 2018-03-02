@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -114,11 +115,13 @@ public class ImagePickerMain extends CordovaPlugin {
                     ArrayList<String> imagePath = new ArrayList();
                     for (ImageItem image : images) {
                         String result = image.path;
+                        boolean saved = false;
                         String destPath = ImagePicker.createFile(cordova.getContext().getExternalCacheDir(), "IMG_"+System.currentTimeMillis(), ".png").getAbsolutePath();
-                        boolean saved;
                         if (ImagePicker.getInstance().isOrigin() || ImagePicker.getInstance().getOutPutX() == 0 || ImagePicker.getInstance().getOutPutY() == 0) {
-                            //原图按图片原始尺寸压缩
-                            saved = BitmapUtil.saveBitmap2File(BitmapUtil.compress(result), destPath);
+                            //原图按图片原始尺寸压缩, size小于150kb的不压缩
+                            if (isNeedCompress(150, result)) {
+                                saved = BitmapUtil.saveBitmap2File(BitmapUtil.compress(result), destPath);
+                            }
                         } else {
                             //按给定的宽高压缩
                             saved = BitmapUtil.saveBitmap2File(BitmapUtil.getScaledBitmap(result, ImagePicker.getInstance().getOutPutX(), ImagePicker.getInstance().getOutPutY()), destPath);
@@ -136,5 +139,19 @@ public class ImagePickerMain extends CordovaPlugin {
         } else {
             mCallbackContext.error("获取失败");
         }
+    }
+
+    private boolean isNeedCompress(int leastCompressSize, String path) {
+        if (leastCompressSize > 0) {
+            File source = new File(path);
+            if (!source.exists()) {
+                return false;
+            }
+
+            if (source.length() <= (leastCompressSize << 10)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
