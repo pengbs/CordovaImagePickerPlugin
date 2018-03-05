@@ -71,12 +71,14 @@ public class ImagePickerMain extends CordovaPlugin {
 
                 if (cutType == 0) {
                     //圆形单选
+                    imagePicker.setCutType(0);
                     imagePicker.setStyle(CropImageView.Style.CIRCLE);
                     imagePicker.setAspectRatio(new AspectRatio(1, 1));
                     imagePicker.setMultiMode(false);
                     imagePicker.setDynamicCrop(false);
                 } else if (cutType == 1) {
                     //矩形
+                    imagePicker.setCutType(1);
                     imagePicker.setStyle(CropImageView.Style.RECTANGLE);
                     imagePicker.setAspectRatio(new AspectRatio(1, 1));
                     imagePicker.setDynamicCrop(false);
@@ -84,6 +86,7 @@ public class ImagePickerMain extends CordovaPlugin {
                         imagePicker.setMultiMode(false);
                     }
                 } else {
+                    imagePicker.setCutType(2);
                     imagePicker.setStyle(CropImageView.Style.RECTANGLE);
                     int cutWidth = params.optInt("cutWidth", 1);
                     int cutHeight = params.optInt("cutHeight", 1);
@@ -116,7 +119,7 @@ public class ImagePickerMain extends CordovaPlugin {
                     for (ImageItem image : images) {
                         String result = image.path;
                         boolean saved = false;
-                        String destPath = ImagePicker.createFile(cordova.getContext().getExternalCacheDir(), "IMG_"+System.currentTimeMillis(), ".png").getAbsolutePath();
+                        String destPath = ImagePicker.createFile(ImagePicker.getInstance().getCropCacheFolder(cordova.getContext()), "IMG_"+System.currentTimeMillis(), ".png").getAbsolutePath();
                         if (ImagePicker.getInstance().isOrigin() || ImagePicker.getInstance().getOutPutX() == 0 || ImagePicker.getInstance().getOutPutY() == 0) {
                             //原图按图片原始尺寸压缩, size小于150kb的不压缩
                             if (isNeedCompress(150, result)) {
